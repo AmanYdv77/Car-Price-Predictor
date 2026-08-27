@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+    </div>
+
+    <div class="container glass-panel">
+        <header>
+            <h1>Car Price Predictor</h1>
+            <p>Estimate the value of your car using modern Machine Learning</p>
+        </header>
+
+        <!-- Progress Tracker -->
+        <div class="steps-progress">
+            <div class="progress-line">
+                <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+            <div class="step-indicator active" data-step="1">
+                <div class="icon-wrap"><i data-lucide="car"></i></div>
+                <span>Profile</span>
+            </div>
+            <div class="step-indicator" data-step="2">
+                <div class="icon-wrap"><i data-lucide="maximize"></i></div>
+                <span>Size</span>
+            </div>
+            <div class="step-indicator" data-step="3">
+                <div class="icon-wrap"><i data-lucide="wrench"></i></div>
+                <span>Engine</span>
+            </div>
+            <div class="step-indicator" data-step="4">
+                <div class="icon-wrap"><i data-lucide="gauge"></i></div>
+                <span>Power</span>
+            </div>
+        </div>
+
+        <form id="prediction-form">
+            <!-- STEP 1: Basic Specifications -->
+            <div class="step-tab active" id="step-tab-1">
+                <div class="section-title-wrap">
+                    <i data-lucide="car" class="section-icon"></i>
+                    <h2>Vehicle Profile</h2>
+                </div>
+                <div class="grid-layout">
+                    <div class="input-group">
+                        <label for="symboling">Insurance Risk (Symboling)</label>
+                        <select id="symboling" name="symboling">
+                            <option value="-2">-2 (Very Safe)</option>
+                            <option value="-1">-1 (Safe)</option>
+                            <option value="0" selected>0 (Neutral)</option>
+                            <option value="1">1 (Moderate Risk)</option>
+                            <option value="2">2 (High Risk)</option>
+                            <option value="3">3 (Very High Risk)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="fueltype">Fuel Type</label>
+                        <select id="fueltype" name="fueltype">
+                            <option value="gas" selected>Gas</option>
+                            <option value="diesel">Diesel</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="aspiration">Aspiration</label>
+                        <select id="aspiration" name="aspiration">
+                            <option value="std" selected>Standard</option>
+                            <option value="turbo">Turbo</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="doornumber">Door Number</label>
+                        <select id="doornumber" name="doornumber">
+                            <option value="two">Two</option>
+                            <option value="four" selected>Four</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="carbody">Car Body Type</label>
+                        <select id="carbody" name="carbody">
+                            <option value="sedan" selected>Sedan</option>
+                            <option value="hatchback">Hatchback</option>
+                            <option value="wagon">Wagon</option>
+                            <option value="hardtop">Hardtop</option>
+                            <option value="convertible">Convertible</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="drivewheel">Drive Wheel</label>
+                        <select id="drivewheel" name="drivewheel">
+                            <option value="fwd" selected>FWD (Front-Wheel)</option>
+                            <option value="rwd">RWD (Rear-Wheel)</option>
+                            <option value="4wd">4WD (Four-Wheel)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="enginelocation">Engine Location</label>
+                        <select id="enginelocation" name="enginelocation">
+                            <option value="front" selected>Front</option>
+                            <option value="rear">Rear</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2: Physical Dimensions -->
+            <div class="step-tab" id="step-tab-2">
+                <div class="section-title-wrap">
+                    <i data-lucide="maximize" class="section-icon"></i>
+                    <h2>Physical Dimensions</h2>
+                </div>
+                <div class="grid-layout">
+                    <!-- Slider curbweight -->
+                    <div class="input-group full-width-slider">
+                        <div class="slider-header">
+                            <label for="curbweight">Curb Weight (lbs)</label>
+                            <span class="slider-value" id="curbweight-val">2337</span>
+                        </div>
+                        <input type="range" min="1400" max="4200" step="10" id="curbweight" name="curbweight" value="2337">
+                    </div>
+                    <!-- Slider wheelbase -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="wheelbase">Wheelbase (in)</label>
+                            <span class="slider-value" id="wheelbase-val">99.8</span>
+                        </div>
+                        <input type="range" min="86.0" max="122.0" step="0.1" id="wheelbase" name="wheelbase" value="99.8">
+                    </div>
+                    <!-- Slider carlength -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="carlength">Car Length (in)</label>
+                            <span class="slider-value" id="carlength-val">176.6</span>
+                        </div>
+                        <input type="range" min="140.0" max="210.0" step="0.1" id="carlength" name="carlength" value="176.6">
+                    </div>
+                    <!-- Slider carwidth -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="carwidth">Car Width (in)</label>
+                            <span class="slider-value" id="carwidth-val">66.2</span>
+                        </div>
+                        <input type="range" min="60.0" max="73.0" step="0.1" id="carwidth" name="carwidth" value="66.2">
+                    </div>
+                    <!-- Slider carheight -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="carheight">Car Height (in)</label>
+                            <span class="slider-value" id="carheight-val">54.3</span>
+                        </div>
+                        <input type="range" min="47.0" max="60.0" step="0.1" id="carheight" name="carheight" value="54.3">
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: Engine Specifications -->
+            <div class="step-tab" id="step-tab-3">
+                <div class="section-title-wrap">
+                    <i data-lucide="wrench" class="section-icon"></i>
+                    <h2>Engine Powerhouse</h2>
+                </div>
+                <div class="grid-layout">
+                    <div class="input-group">
+                        <label for="enginetype">Engine Architecture</label>
+                        <select id="enginetype" name="enginetype">
+                            <option value="ohc" selected>OHC (Overhead Cam)</option>
+                            <option value="ohcv">OHCV</option>
+                            <option value="dohc">DOHC (Double Overhead Cam)</option>
+                            <option value="l">L Engine</option>
+                            <option value="rotor">Rotary</option>
+                            <option value="ohcf">OHCF</option>
+                            <option value="dohcv">DOHCV</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="cylindernumber">Cylinder Count</label>
+                        <select id="cylindernumber" name="cylindernumber">
+                            <option value="four" selected>Four Cylinders</option>
+                            <option value="six">Six Cylinders</option>
+                            <option value="five">Five Cylinders</option>
+                            <option value="eight">Eight Cylinders</option>
+                            <option value="two">Two Cylinders</option>
+                            <option value="three">Three Cylinders</option>
+                            <option value="twelve">Twelve Cylinders</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="fuelsystem">Fuel System</label>
+                        <select id="fuelsystem" name="fuelsystem">
+                            <option value="mpfi" selected>MPFI (Multi-point Fuel Injection)</option>
+                            <option value="2bbl">2BBL Carburetor</option>
+                            <option value="mfi">MFI</option>
+                            <option value="1bbl">1BBL Carburetor</option>
+                            <option value="spfi">SPFI</option>
+                            <option value="4bbl">4BBL Carburetor</option>
+                            <option value="idi">Indirect Injection (Diesel)</option>
+                            <option value="spdi">SPDI</option>
+                        </select>
+                    </div>
+                    <!-- Slider enginesize -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="enginesize">Engine Size (cc)</label>
+                            <span class="slider-value" id="enginesize-val">109</span>
+                        </div>
+                        <input type="range" min="60" max="330" step="1" id="enginesize" name="enginesize" value="109">
+                    </div>
+                    <!-- Slider boreratio -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="boreratio">Bore Ratio</label>
+                            <span class="slider-value" id="boreratio-val">3.19</span>
+                        </div>
+                        <input type="range" min="2.50" max="4.00" step="0.01" id="boreratio" name="boreratio" value="3.19">
+                    </div>
+                    <!-- Slider stroke -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="stroke">Stroke</label>
+                            <span class="slider-value" id="stroke-val">3.40</span>
+                        </div>
+                        <input type="range" min="2.00" max="4.20" step="0.01" id="stroke" name="stroke" value="3.40">
+                    </div>
+                    <!-- Slider compressionratio -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="compressionratio">Compression Ratio</label>
+                            <span class="slider-value" id="compressionratio-val">10.0</span>
+                        </div>
+                        <input type="range" min="7.0" max="23.0" step="0.1" id="compressionratio" name="compressionratio" value="10.0">
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 4: Performance & Prediction -->
+            <div class="step-tab" id="step-tab-4">
+                <div class="section-title-wrap">
+                    <i data-lucide="gauge" class="section-icon"></i>
+                    <h2>Performance & Efficiency</h2>
+                </div>
+                <div class="grid-layout">
+                    <!-- Slider horsepower -->
+                    <div class="input-group full-width-slider">
+                        <div class="slider-header">
+                            <label for="horsepower">Horsepower (HP)</label>
+                            <span class="slider-value" id="horsepower-val">102</span>
+                        </div>
+                        <input type="range" min="40" max="300" step="1" id="horsepower" name="horsepower" value="102">
+                    </div>
+                    <!-- Slider peakrpm -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="peakrpm">Peak RPM</label>
+                            <span class="slider-value" id="peakrpm-val">5500</span>
+                        </div>
+                        <input type="range" min="4000" max="6600" step="50" id="peakrpm" name="peakrpm" value="5500">
+                    </div>
+                    <!-- Slider citympg -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="citympg">City Fuel Economy (MPG)</label>
+                            <span class="slider-value" id="citympg-val">24</span>
+                        </div>
+                        <input type="range" min="10" max="50" step="1" id="citympg" name="citympg" value="24">
+                    </div>
+                    <!-- Slider highwaympg -->
+                    <div class="input-group">
+                        <div class="slider-header">
+                            <label for="highwaympg">Highway Fuel Economy (MPG)</label>
+                            <span class="slider-value" id="highwaympg-val">30</span>
+                        </div>
+                        <input type="range" min="12" max="55" step="1" id="highwaympg" name="highwaympg" value="30">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Navigation Controls -->
+            <div class="form-navigation">
+                <button type="button" id="prev-btn" class="nav-btn secondary-btn hidden">
+                    <i data-lucide="arrow-left"></i> Back
+                </button>
+                <button type="button" id="next-btn" class="nav-btn primary-btn">
+                    Next <i data-lucide="arrow-right"></i>
+                </button>
+                <button type="submit" id="submit-btn" class="nav-btn submit-btn hidden">
+                    Predict Value <i data-lucide="trending-up"></i>
+                </button>
+            </div>
+        </form>
+
+        <!-- Dynamic Results Screen -->
+        <div id="result-container" class="result-box hidden">
+            <div class="result-header">
+                <i data-lucide="badge-dollar-sign" class="result-icon"></i>
+                <p>Estimated Market Value</p>
+            </div>
+            <div class="price-displays">
+                <h2 id="predicted-price">$0</h2>
+                <h3 id="predicted-price-inr">₹0</h3>
+            </div>
+        </div>
+
+        <!-- Model Info Footer -->
+        <div class="model-meta">
+            <div class="meta-item">
+                <span class="meta-label">R² Accuracy Score</span>
+                <span class="meta-value">0.798</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Model Type</span>
+                <span class="meta-value">Linear Regression</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
