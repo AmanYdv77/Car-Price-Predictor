@@ -11,9 +11,9 @@ app = FastAPI(title="Car Price Predictor API")
 
 # Load model, encoders, and expected columns globally
 try:
-    model = joblib.load('model.pkl')
-    encoders = joblib.load('encoders.pkl')
-    expected_columns = joblib.load('expected_columns.pkl')
+    model = joblib.load('models/model.pkl')
+    encoders = joblib.load('models/encoders.pkl')
+    expected_columns = joblib.load('models/expected_columns.pkl')
 except Exception as e:
     print(f"Error loading model files: {e}. Make sure to run train_model.py first.")
     model, encoders, expected_columns = None, None, None

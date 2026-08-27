@@ -1,3 +1,20 @@
+# Python Cache
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Temp files
 Car_Price_Predictor.py
+temp/
+scratch/

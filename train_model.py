@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import joblib
+import os
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LinearRegression
@@ -45,14 +46,17 @@ def train_and_save_model():
     print(f"RMSE: {round(rmse, 2)}")
     print(f"R2 Score: {round(r2, 3)}")
     
-    print("Saving model and encoders...")
-    joblib.dump(model, 'model.pkl')
-    joblib.dump(encoders, 'encoders.pkl')
+    # Ensure directory exists
+    os.makedirs('models', exist_ok=True)
+    
+    print("Saving model and encoders to models/ directory...")
+    joblib.dump(model, 'models/model.pkl')
+    joblib.dump(encoders, 'models/encoders.pkl')
     # Also save the list of expected columns in order, for the FastAPI backend
     expected_columns = list(X.columns)
-    joblib.dump(expected_columns, 'expected_columns.pkl')
+    joblib.dump(expected_columns, 'models/expected_columns.pkl')
     
-    print("Done! model.pkl, encoders.pkl and expected_columns.pkl have been saved.")
+    print("Done! models/model.pkl, models/encoders.pkl and models/expected_columns.pkl have been saved.")
 
 if __name__ == "__main__":
     train_and_save_model()
