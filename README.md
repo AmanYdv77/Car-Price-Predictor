@@ -1,86 +1,183 @@
-# Car Price Predictor Web App
+﻿<div align="center">
 
-A clean, structured machine learning project that predicts car prices using **Linear Regression**, packaged inside a modern **FastAPI** web server and a premium, responsive **HTML5/CSS3/JS** frontend.
+# Car Price Predictor
+
+**Machine Learning Valuation Engine and Interactive FastAPI Web Application**
+
+A production-ready predictive service estimating automobile market valuations based on vehicle specifications, powertrain metrics, and dimensional features.
+
+<br/>
+
+[![CI](https://github.com/AmanYdv77/Car_Price_Prediction/actions/workflows/ci.yml/badge.svg)](https://github.com/AmanYdv77/Car_Price_Prediction/actions/workflows/ci.yml)
+[![Python Version](https://img.shields.io/badge/Python-3.8%2B-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-1.0%2B-F7931E.svg?style=flat&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](LICENSE)
+[![Build Status](https://img.shields.io/badge/Tests-Passing-success.svg?style=flat)](tests/)
+
+<br/>
+
+[Key Capabilities](#key-capabilities) &bull;
+[API Specification](#api-specification) &bull;
+[Model Performance](#model-performance) &bull;
+[Installation & Usage](#installation--usage) &bull;
+[Project Structure](#project-structure) &bull;
+[License](#license)
 
 ---
 
-## 🌟 Key Features
+</div>
 
-*   **Linear Regression Model**: Achieves an **$R^2$ score of ~0.798** in estimating car prices.
-*   **FastAPI Backend**: Provides real-time predictions via validated JSON payloads (utilizing **Pydantic**).
-*   **Premium Glassmorphism UI**: Built with a responsive dark-mode layout, blur-filtered backdrops, and animated background elements.
-*   **Multi-Step wizard Form**: Groups the 23 model inputs into 4 digestible steps to maximize usability.
-*   **Custom Range Sliders**: Numeric specs (like horsepower, curb weight, and engine size) feature drag controls with real-time value badges.
-*   **Dual-Currency Outputs**: Displays predictions in both **USD ($)** and **INR (₹)** with an animated ease-out count-up rolling animation.
-*   **Lucide Icons**: Styled with modern vectors to signpost sections and interactive controls.
+## Key Capabilities
+
+> **Car Price Predictor** combines an empirical machine learning pipeline with a high-performance asynchronous API and an intuitive Glassmorphism multi-step wizard interface.
+
+* **Linear Regression Engine:** Delivers deterministic valuation estimates with an R² score of ~0.798 on unseen evaluation holdouts.
+* **FastAPI Backend:** Fully asynchronous RESTful interface utilizing Pydantic schemas for strict payload validation and structured error handling.
+* **Glassmorphism Interface:** Responsive multi-step wizard grouping 23 complex vehicle parameters into 4 logical steps (Profile, Dimensions, Powertrain, and Performance).
+* **Dual Currency Conversion:** Real-time client-side conversion delivering valuations in both USD ($) and INR (₹).
+* **Automated Test Coverage:** Complete integration test suite validating server health, HTML serving, successful inferences, and bad request error codes.
 
 ---
 
-## 📁 Repository Structure
+## API Specification
 
+The backend exposes the following RESTful endpoints:
+
+| Method | Endpoint | Description | Request Body | Response |
+|:---|:---|:---|:---|:---|
+| `GET` | `/health` | Service health status and model artifact readiness | None | `{"status": "healthy", "model_loaded": true}` |
+| `GET` | `/` | Serves the interactive HTML5/CSS3 frontend | None | HTML document |
+| `GET` | `/docs` | Interactive Swagger UI API documentation | None | OpenAPI interface |
+| `POST` | `/predict` | Computes price valuation for given vehicle features | `CarFeatures` (JSON) | `{"predicted_price": 13119.93}` |
+
+### Sample Inference Payload
+
+```json
+{
+  "symboling": 3,
+  "fueltype": "gas",
+  "aspiration": "std",
+  "doornumber": "two",
+  "carbody": "convertible",
+  "drivewheel": "rwd",
+  "enginelocation": "front",
+  "wheelbase": 88.6,
+  "carlength": 168.8,
+  "carwidth": 64.1,
+  "carheight": 48.8,
+  "curbweight": 2548,
+  "enginetype": "dohc",
+  "cylindernumber": "four",
+  "enginesize": 130,
+  "fuelsystem": "mpfi",
+  "boreratio": 3.47,
+  "stroke": 2.68,
+  "compressionratio": 9.0,
+  "horsepower": 111,
+  "peakrpm": 5000,
+  "citympg": 21,
+  "highwaympg": 27
+}
 ```
-├── models/                     # Trained ML model weights and encoders
-│   ├── model.pkl               # Pickled Linear Regression model
-│   ├── encoders.pkl            # Pickled LabelEncoders for text fields
-│   └── expected_columns.pkl    # Order of columns expected by the model
-├── static/                     # Frontend UI assets
-│   ├── index.html              # Responsive multi-step wizard form layout
-│   ├── style.css               # Glassmorphism dark-mode style sheets
-│   └── script.js               # Wizard, slider logic, and rolling price anims
-├── .gitignore                  # Prevents caching local virtualenvs & caches
-├── CarPrice_Assignment.csv     # Training dataset
-├── Car_Price_Predictor.ipynb   # Original exploratory research notebook
-├── main.py                     # FastAPI application router and server
-├── requirements.txt            # Python environment packages
-└── train_model.py              # ML pipeline automation script
-```
 
 ---
 
-## 🚀 Getting Started
+## Model Performance
 
-### 1. Installation & Environment Setup
-Clone the repository and install the dependencies. It is recommended to use a virtual environment:
+The predictive model is trained on standard automotive benchmark telemetry. Unique identifiers (such as `car_ID` and `CarName`) are discarded to avoid high-cardinality overfitting, categorical variables are mapped using fitted label encoders, and continuous features are regressed against market price.
+
+| Metric | Score | Interpretation |
+|:---|:---|:---|
+| **R² Score** | `0.798` | Explains approximately 80% of total price variance |
+| **Mean Absolute Error (MAE)** | `$2,526.41` | Average absolute divergence across predictions |
+| **Root Mean Squared Error (RMSE)** | `$3,989.54` | Penalized metric reflecting variance on extreme luxury trims |
+
+---
+
+## Installation & Usage
+
+### 1. Environment Setup
 
 ```bash
 # Clone the repository
 git clone https://github.com/AmanYdv77/Car_Price_Prediction.git
 cd Car_Price_Prediction
 
-# Create and activate a virtual environment
+# Create and activate virtual environment
 python -m venv .venv
-# On Windows (PowerShell):
-.venv\Scripts\Activate.ps1
-# On Linux/macOS:
+# On Windows:
+.venv\Scripts\activate
+# On macOS / Linux:
 source .venv/bin/activate
 
-# Install requirements
+# Install required dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Train the Model
-To train the model and save the pickles locally inside the `models/` directory, run the training pipeline:
+### 2. Model Training Pipeline
+To retrain the regression model and export serialized artifacts into `models/`:
 
 ```bash
 python train_model.py
 ```
 
-### 3. Run the FastAPI Server
-Launch the development server using **Uvicorn**:
+### 3. Launching the Web Server
+Start the FastAPI server via Uvicorn:
 
 ```bash
-python -m uvicorn main:app --reload
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-Once running, navigate to the local address in your web browser:
-👉 **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
+Access the interface in your browser:
+* **Application Interface:** `http://127.0.0.1:8000`
+* **Interactive API Documentation:** `http://127.0.0.1:8000/docs`
+
+### 4. Running Verification Tests
+Execute the automated test suite locally:
+
+```bash
+python -m unittest discover -s tests -v
+```
 
 ---
 
-## 📊 Model Details
+## Project Structure
 
-The model is trained on the standard CarPrice assignment dataset. We drop identifiers like `car_ID` and `CarName` to prevent overfitting on string labels, encode categorical columns (like `fueltype`, `carbody`, and `enginetype`) using `LabelEncoder`, and fit a `LinearRegression` model.
+```text
+Car_Price_Prediction/
+|-- .github/
+|   `-- workflows/
+|       `-- ci.yml                  # Automated CI test pipeline
+|-- models/
+|   |-- encoders.pkl                # Serialized categorical encoders
+|   |-- expected_columns.pkl        # Deterministic feature column ordering
+|   `-- model.pkl                   # Trained Linear Regression model
+|-- static/
+|   |-- index.html                  # Responsive multi-step wizard form layout
+|   |-- script.js                   # Client-side wizard transitions and dual currency logic
+|   `-- style.css                   # Glassmorphism dark theme stylesheets
+|-- tests/
+|   `-- test_api.py                 # Health, static serving, and prediction tests
+|-- .gitignore                      # Git exclusion rules
+|-- CarPrice_Assignment.csv         # Automotive dataset
+|-- Car_Price_Predictor.ipynb       # Exploratory analysis and training notebook
+|-- LICENSE                         # MIT License
+|-- main.py                         # FastAPI application backend and routing
+|-- README.md                       # Platform documentation
+|-- requirements.txt                # Python environment specifications
+`-- train_model.py                  # Model training and artifact generation pipeline
+```
 
-*   **R² Score**: `0.798` (Explains ~80% of the price variance)
-*   **Mean Absolute Error (MAE)**: `$2526.41`
-*   **Root Mean Squared Error (RMSE)**: `$3989.54`
+---
+
+## Author
+
+**Aman Yadav**
+* GitHub: [@AmanYdv77](https://github.com/AmanYdv77)
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
