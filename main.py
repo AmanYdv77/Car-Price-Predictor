@@ -1,3 +1,4 @@
+﻿from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -5,15 +6,18 @@ from pydantic import BaseModel
 import joblib
 import pandas as pd
 import numpy as np
-import os
+
+BASE_DIR = Path(__file__).resolve().parent
+MODELS_DIR = BASE_DIR / "models"
+STATIC_DIR = BASE_DIR / "static"
 
 app = FastAPI(title="Car Price Predictor API")
 
 # Load model, encoders, and expected columns globally
 try:
-    model = joblib.load('models/model.pkl')
-    encoders = joblib.load('models/encoders.pkl')
-    expected_columns = joblib.load('models/expected_columns.pkl')
+    model = joblib.load(MODELS_DIR / "model.pkl")
+    encoders = joblib.load(MODELS_DIR / "encoders.pkl")
+    expected_columns = joblib.load(MODELS_DIR / "expected_columns.pkl")
 except Exception as e:
     print(f"Error loading model files: {e}. Make sure to run train_model.py first.")
     model, encoders, expected_columns = None, None, None
@@ -44,32 +48,47 @@ class CarFeatures(BaseModel):
     highwaympg: int
 
 # Mount static directory for HTML/CSS/JS
-if os.path.exists("static"):
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+@app.get("/health")
+async def health_check():
+    return {
+        "status": "healthy",
+        "model_loaded": model is not None,
+        "encoders_loaded": encoders is not None,
+    }
 
 @app.get("/")
 async def root():
-    return FileResponse("static/index.html")
+    index_file = STATIC_DIR / "index.html"
+    if not index_file.exists():
+        raise HTTPException(status_code=404, detail="Frontend index.html not found.")
+    return FileResponse(index_file)
 
 @app.post("/predict")
 async def predict_price(features: CarFeatures):
-    if model is None:
+    if model is None or encoders is None or expected_columns is None:
         raise HTTPException(status_code=500, detail="Model is not loaded.")
         
     try:
-        # Convert input to dictionary
-        input_data = features.dict()
+        # Convert input to dictionary (compatible with Pydantic v1 & v2)
+        input_data = (
+            features.model_dump()
+            if hasattr(features, "model_dump")
+            else features.dict()
+        )
         
         # Apply LabelEncoders for categorical columns
         for col, le in encoders.items():
             if col in input_data:
-                # Handle unseen labels by setting to a default or error
                 try:
-                    # We pass it as a list to transform
                     input_data[col] = le.transform([input_data[col]])[0]
                 except ValueError:
-                    # If unseen label, you might want to handle it, but for now we raise
-                    raise HTTPException(status_code=400, detail=f"Invalid or unseen value for {col}: {input_data[col]}")
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"Invalid or unseen value for {col}: {input_data[col]}"
+                    )
         
         # Create DataFrame in the exact order the model expects
         df = pd.DataFrame([input_data])[expected_columns]
@@ -77,10 +96,13 @@ async def predict_price(features: CarFeatures):
         # Predict
         prediction = model.predict(df)[0]
         
-        # Return price (ensure no negative values are returned)
-        predicted_price = max(0, float(prediction))
+        # Return price (ensure non-negative)
+        predicted_price = max(0.0, float(prediction))
         
         return {"predicted_price": round(predicted_price, 2)}
         
+    except HTTPException:
+        # Re-raise explicit HTTP exceptions (e.g. 400 Bad Request)
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
