@@ -29,16 +29,20 @@ A production-ready predictive service estimating automobile market valuations ba
 
 </div>
 
-## Deployment
+## Cloud Deployment
 
-Deploy this full-stack application instantly to **Vercel** with zero server management:
+Deploy this full-stack application directly to **Render** with one click:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/AmanYdv77/Car-Price-Predictor)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/AmanYdv77/Car-Price-Predictor)
 
-1. Click the **Deploy with Vercel** button above or import AmanYdv77/Car-Price-Predictor in your [Vercel Dashboard](https://vercel.com/dashboard).
-2. Leave all environment settings as default (Vercel automatically detects ercel.json and Python dependencies in 
-equirements.txt).
-3. Click **Deploy**. Your application will be live with an automatic HTTPS domain in under 2 minutes.
+### Manual Setup on Render
+1. Navigate to the [Render Dashboard](https://dashboard.render.com/) and click **New + -> Web Service**.
+2. Connect your GitHub repository: AmanYdv77/Car-Price-Predictor.
+3. Configure the following runtime specifications:
+   * **Environment:** Python 3
+   * **Build Command:** pip install -r requirements.txt
+   * **Start Command:** uvicorn main:app --host 0.0.0.0 --port $PORT
+4. Click **Deploy Web Service**. Render provisions an automated HTTPS URL (for example: https://car-price-predictor.onrender.com).
 
 ---
 
@@ -181,7 +185,9 @@ Car-Price-Predictor/
 |-- LICENSE                         # MIT License
 |-- main.py                         # FastAPI application backend and routing
 |-- README.md
-|-- vercel.json               # Vercel deployment and routing configuration                       # Platform documentation
+|-- Procfile                  # Process manager declaration for cloud hosts
+|-- render.yaml               # Render infrastructure-as-code blueprint
+|-- vercel.json               # Vercel deployment and routing configuration
 |-- requirements.txt                # Python environment specifications
 `-- train_model.py                  # Model training and artifact generation pipeline
 ```
