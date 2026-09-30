@@ -8,7 +8,7 @@ A production-ready predictive service estimating automobile market valuations ba
 
 <br/>
 
-[![CI](https://github.com/AmanYdv77/Car_Price_Prediction/actions/workflows/ci.yml/badge.svg)](https://github.com/AmanYdv77/Car_Price_Prediction/actions/workflows/ci.yml)
+[![CI](https://github.com/AmanYdv77/Car-Price-Predictor/actions/workflows/ci.yml/badge.svg)](https://github.com/AmanYdv77/Car-Price-Predictor/actions/workflows/ci.yml)
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.0%2B-F7931E.svg?style=flat&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
@@ -17,6 +17,7 @@ A production-ready predictive service estimating automobile market valuations ba
 
 <br/>
 
+[Deployment](#deployment) &bull;
 [Key Capabilities](#key-capabilities) &bull;
 [API Specification](#api-specification) &bull;
 [Model Performance](#model-performance) &bull;
@@ -27,6 +28,19 @@ A production-ready predictive service estimating automobile market valuations ba
 ---
 
 </div>
+
+## Deployment
+
+Deploy this full-stack application instantly to **Vercel** with zero server management:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/AmanYdv77/Car-Price-Predictor)
+
+1. Click the **Deploy with Vercel** button above or import AmanYdv77/Car-Price-Predictor in your [Vercel Dashboard](https://vercel.com/dashboard).
+2. Leave all environment settings as default (Vercel automatically detects ercel.json and Python dependencies in 
+equirements.txt).
+3. Click **Deploy**. Your application will be live with an automatic HTTPS domain in under 2 minutes.
+
+---
 
 ## Key Capabilities
 
@@ -101,8 +115,8 @@ The predictive model is trained on standard automotive benchmark telemetry. Uniq
 
 ```bash
 # Clone the repository
-git clone https://github.com/AmanYdv77/Car_Price_Prediction.git
-cd Car_Price_Prediction
+git clone https://github.com/AmanYdv77/Car-Price-Predictor.git
+cd Car-Price-Predictor
 
 # Create and activate virtual environment
 python -m venv .venv
@@ -145,7 +159,7 @@ python -m unittest discover -s tests -v
 ## Project Structure
 
 ```text
-Car_Price_Prediction/
+Car-Price-Predictor/
 |-- .github/
 |   `-- workflows/
 |       `-- ci.yml                  # Automated CI test pipeline
@@ -157,6 +171,8 @@ Car_Price_Prediction/
 |   |-- index.html                  # Responsive multi-step wizard form layout
 |   |-- script.js                   # Client-side wizard transitions and dual currency logic
 |   `-- style.css                   # Glassmorphism dark theme stylesheets
+|-- api/
+|   -- index.py              # Vercel serverless function entrypoint
 |-- tests/
 |   `-- test_api.py                 # Health, static serving, and prediction tests
 |-- .gitignore                      # Git exclusion rules
@@ -164,7 +180,8 @@ Car_Price_Prediction/
 |-- Car_Price_Predictor.ipynb       # Exploratory analysis and training notebook
 |-- LICENSE                         # MIT License
 |-- main.py                         # FastAPI application backend and routing
-|-- README.md                       # Platform documentation
+|-- README.md
+|-- vercel.json               # Vercel deployment and routing configuration                       # Platform documentation
 |-- requirements.txt                # Python environment specifications
 `-- train_model.py                  # Model training and artifact generation pipeline
 ```
