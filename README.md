@@ -6,6 +6,8 @@
 
 A production-ready predictive service estimating automobile market valuations based on vehicle specifications, powertrain metrics, and dimensional features.
 
+[![Live Application](https://img.shields.io/badge/Live_App-car--price--predictor--8oj4.onrender.com-4F46E5?style=for-the-badge&logo=render&logoColor=white)](https://car-price-predictor-8oj4.onrender.com)
+
 <br/>
 
 [![CI](https://github.com/AmanYdv77/Car-Price-Predictor/actions/workflows/ci.yml/badge.svg)](https://github.com/AmanYdv77/Car-Price-Predictor/actions/workflows/ci.yml)
@@ -17,7 +19,7 @@ A production-ready predictive service estimating automobile market valuations ba
 
 <br/>
 
-[Deployment](#deployment) &bull;
+[Live Demo](https://car-price-predictor-8oj4.onrender.com) &bull;
 [Key Capabilities](#key-capabilities) &bull;
 [API Specification](#api-specification) &bull;
 [Model Performance](#model-performance) &bull;
@@ -31,7 +33,13 @@ A production-ready predictive service estimating automobile market valuations ba
 
 ## Cloud Deployment
 
-Deploy this full-stack application directly to **Render** with one click:
+The live application is deployed on **Render** and actively serving requests:
+
+* **Live Web Interface:** [car-price-predictor-8oj4.onrender.com](https://car-price-predictor-8oj4.onrender.com)
+* **Interactive OpenAPI Docs:** [car-price-predictor-8oj4.onrender.com/docs](https://car-price-predictor-8oj4.onrender.com/docs)
+* **System Health Endpoint:** [car-price-predictor-8oj4.onrender.com/health](https://car-price-predictor-8oj4.onrender.com/health)
+
+Deploy an independent instance to Render with one click:
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/AmanYdv77/Car-Price-Predictor)
 
@@ -198,6 +206,7 @@ Car-Price-Predictor/
 
 **Aman Yadav**
 * GitHub: [@AmanYdv77](https://github.com/AmanYdv77)
+* Live Application: [Car Price Predictor](https://car-price-predictor-8oj4.onrender.com)
 
 ---
 
